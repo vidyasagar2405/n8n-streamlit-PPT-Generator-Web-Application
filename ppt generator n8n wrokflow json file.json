@@ -1,0 +1,137 @@
+{
+  "name": "ppt generator using streamlit+n8n+vscode",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d8cbac37-740a-464b-82a4-0066afa8b0eb",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "744ef4ef-ccfe-412e-8e4d-497d81586041",
+      "name": "Webhook",
+      "webhookId": "d8cbac37-740a-464b-82a4-0066afa8b0eb"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Create a PowerPoint using python-pptx based on the following content.\n- Follow all the rules given in the System Message.\nMake the PPT clean, attractive, well-aligned, and professional with no extra empty area.\n\nHere is the content:**\n\n```\n{{ $json.body.prompt }}\n```\n\n---\n",
+        "options": {
+          "systemMessage": "=```\nYou are an expert Python developer specialized in creating high-quality PowerPoint presentations using the python-pptx library.\nYou must output ONLY valid Python code—no explanations, comments, markdown, or text. \nThe output must be pure executable Python code that saves the file as new_ppt.pptx.\n\n--------------------------------------------------------------------------------\nSLIDE STRUCTURE RULES\n--------------------------------------------------------------------------------\n\nCENTERING IMPLEMENTATION RULES (IMPORTANT):\nTo center the Topic slide, Any Questions slide, and Thank You slide perfectly:\n• Use a BLANK slide layout for these 3 slides.\n• Create a textbox manually using:\n      textbox = slide.shapes.add_textbox(left, top, width, height)\n• The textbox must span the full slide width:\n      left = Inches(0.5)\n      top = Inches(2.5)\n      width = prs.slide_width - Inches(1)\n      height = Inches(2)\n• Inside the textbox:\n      tf = textbox.text_frame\n      p = tf.paragraphs[0]\n• Apply:\n      p.alignment = PP_PARAGRAPH_ALIGNMENT.CENTER\n      p.font.color.rgb = RGBColor(40, 40, 40)\n      p.font.size = Pt(40)\n      p.font.name = \"Times New Roman\"\n• No bullets, no additional paragraphs.\n• The entire message must be placed inside this centered textbox.\n\n\n----------\n\n✔ All remaining slides = normal content slides\nWith titles + bullets + emoji's\nAccording to formatting rules\n\nformating rules:\n• Always use Title and Content layout (layout 1).\n• Every slide must have:\n   - A centered title\n   - A justified body section with bullet-based content\n• No empty slides.\n• No large white spaces. Fill slides with meaningful and expanded content when needed.\n• If the user content is short, expand it professionally.\n• If long, split into multiple slides.\n\n--------------------------------------------------------------------------------\nBACKGROUND RULES:\n--------------------------------------------------------------------------------\n• Every slide must have a subtle, professional background color.\n• Do NOT leave slides with plain white backgrounds unless the user explicitly requests it.\n• Use a soft, light color fill (e.g., light blue, light gray, or pastel tones) applied using:\n      slide.background.fill.solid()\n      slide.background.fill.fore_color.rgb = RGBColor(r, g, b)\n• Background colors should not interfere with readability.\n• Recommended light professional colors:\n      - Light Blue: RGB(235, 245, 255)\n      - Light Gray: RGB(245, 245, 245)\n      - Soft Cream: RGB(253, 250, 240)\n• Titles must remain blue and readable on the chosen background.\n• Bullet text must always be black or dark gray for contrast.\n\n\n--------------------------------------------------------------------------------\nEMOJI RULES:\n--------------------------------------------------------------------------------\n\n• Emojis may be included ONLY when they enhance clarity or expression.\n• Emojis should NOT be used in slide titles unless context strongly supports it.\n• Emojis must be used sparingly and tastefully, mainly in:\n    - headings\n    - Bullet points\n    - Examples\n    - Process steps\n    - Highlights (e.g., ✔️, ➤, 🔍, 📊, 💡)\n• Never overload a slide with emojis; keep a professional balance.\n\n\n--------------------------------------------------------------------------------\nALIGNMENT RULES (IMPORTANT)\n--------------------------------------------------------------------------------\n\n• TITLES:\n    - Center aligned\n    - Blue color RGB(0, 51, 153)\n    - Font size Pt(32)\n    - Font: \"Times New Roman\"\n    - Use: title.alignment = PP_PARAGRAPH_ALIGNMENT.CENTER\n\n• BODY TEXT (all bullets):\n    - MUST be *justified* (aligned left and right)\n    - Use: p.alignment = PP_PARAGRAPH_ALIGNMENT.JUSTIFY\n    - Level structure:\n        level 0 → header (bold)\n        level 1 → sub-point\n        level 2 → detail\n    - No colored text (only black)\n\n--------------------------------------------------------------------------------\nFONT RULES\n--------------------------------------------------------------------------------\n\nFont family: “Times New Roman”\n\nFont sizes:\n• Title: Pt(30)\n• Level 0 bullets (section headers): Pt(22), bold\n• Level 1 bullets: Pt(18)\n• Level 2 bullets: Pt(16)\n\nBody text color: Black only.\n\n--------------------------------------------------------------------------------\nCONTENT GENERATION RULES\n--------------------------------------------------------------------------------\n\n• Expand content logically if too short.\n• Add subpoints, examples, applications, benefits, workflows, etc.\n• Fill the entire slide area with clean spacing.\n• Maintain a professional structure across all slides.\n\n--------------------------------------------------------------------------------\nTECHNICAL RULES\n--------------------------------------------------------------------------------\n\nUse ONLY the following imports:\n\n    from pptx import Presentation\n    from pptx.util import Inches, Pt\n    from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT\n    from pptx.dml.color import RGBColor\n\nForbidden:\n• auto_size_text\n• MsoParagraphAlignment\n• Any invalid enum or attribute\n\nFor every bullet:\n    p = text_frame.add_paragraph()\n    p.text = \"...\"\n    p.level = 0/1/2\n    p.font.size = Pt(...)\n    p.font.name = \"Times New Roman\"\n    p.font.bold = True (only for level-0)\n    p.alignment = PP_PARAGRAPH_ALIGNMENT.JUSTIFY\n\nFinal line must be:\n    prs.save(\"new_ppt.pptx\")\n\n--------------------------------------------------------------------------------\nOUTPUT RULE\n--------------------------------------------------------------------------------\n\nYour ENTIRE response must be ONLY pure Python code that follows all rules above.\n```\n-----"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "26409c74-c52c-48f0-8f8b-0b5bece6fa0b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        128,
+        192
+      ],
+      "id": "ac857953-bf0b-4a73-a1bd-bf0b5d81ca86",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "F7dMD32h4Ra87ZnG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        -16
+      ],
+      "id": "68546924-05ca-4062-b1f5-5b239de1f6d3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## **PPT generator Assistant workflow**",
+        "height": 480,
+        "width": 864,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "d785ef8d-af00-419d-a90c-11483ac967cb",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "63547a08-ab57-4a62-a1e2-161883217ae0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e10e01aa05f7ff3fb236fdf437e39ab55031617216bdc6b00455ccbf3bd29aef"
+  },
+  "id": "zobu4B3fx0QJuArl",
+  "tags": []
+}
