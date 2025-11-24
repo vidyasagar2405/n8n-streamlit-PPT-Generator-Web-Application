@@ -89,12 +89,10 @@ streamlit run app.py
 
 ---
 
+## Demo Video
+[Youtube](https://youtu.be/tbcKuTPiOks)
 
 ## ⭐ Contribute
 
 Suggestions and improvements are welcome.
 Feel free to open a PR or issue!
-
-
-## Demo Video
-[Youtube](https://youtu.be/tbcKuTPiOks)
