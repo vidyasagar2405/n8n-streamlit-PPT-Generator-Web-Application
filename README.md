@@ -1,5 +1,3 @@
-# n8n-streamlit-PPT-Generator-Web-Application
-
 # 🌈 PPT Generator App — Streamlit + n8n + Gemini AI
 
 A simple and powerful **AI-powered PPT Generator** that creates PowerPoint files just by using a prompt.
@@ -90,7 +88,7 @@ streamlit run app.py
 ---
 
 ## Demo Video
-[Youtube](https://youtu.be/tbcKuTPiOks)
+## [Video](https://youtu.be/tbcKuTPiOks)
 
 ## ⭐ Contribute
 
